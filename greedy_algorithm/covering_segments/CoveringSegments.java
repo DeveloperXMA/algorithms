@@ -40,7 +40,7 @@ public class CoveringSegments {
     private static int[] optimalPoints(Segment[] segments) {
         //write your code here
         int count = 0, point;
-        int[] points = new int[segments.length];
+        int[] points = new int[2 * segments.length];
         // Step 1: find minimum right endpoint X, it belongs to our result,
         point = findMinRightPoint(segments);
         points[count++] = point;
