@@ -2,13 +2,52 @@ import java.util.*;
 
 public class CoveringSegments {
 
+    private static int findMinRightPoint(Segment[] segments) {
+        if (segments.length == 0) return -1;
+        int point = segments[0].end;
+        for (int i = 0; i < segments.length; i++) {
+            int rightPoint = segments[i].end;
+            if (rightPoint < point) {
+                point = rightPoint;
+            }
+        }
+        return point;
+    }
+
+    private static Segment[] removeSegment(Segment[] segments, int pointX) {
+        if (segments.length == 0) {
+            return null;
+        }
+        int count = 0, index = 0;
+        for (int i = 0; i < segments.length; i++) {
+            if (segments[i].end == pointX) {
+                count++;
+            }
+        }
+        Segment[] newSegments = new Segment[count];
+        for (int k = 0; k < segments.length; k++) {
+            if (segments[k].end == pointX) {
+                newSegments[index++] = segments[k];
+            }
+        }
+        return newSegments;
+    }
+
     private static int[] optimalPoints(Segment[] segments) {
         //write your code here
+        int count = 0, point;
         int[] points = new int[2 * segments.length];
-        for (int i = 0; i < segments.length; i++) {
-            points[2 * i] = segments[i].start;
-            points[2 * i + 1] = segments[i].end;
+        // Step 1: find minimum right endpoint X, it belongs to our result,
+        point = findMinRightPoint(segments);
+        points[count++] = point;
+        // Step 2: remove all segments that contains X
+        while (segments.length > 0) {
+            segments = removeSegment(segments, point);
+            point = findMinRightPoint(segments);
+            points[count++] = point;
         }
+        // repeat Step1 until there is no element left in Segment array
+
         return points;
     }
 
